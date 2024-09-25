@@ -86,10 +86,6 @@ const FeaturedProperties = () => {
     <View style={styles.container}>
      <View style={styles.sectionHeading}>
         <Text style={styles.heading}>Properties for Sales</Text>
-        <View style={styles.sectionLine}>
-          <View style={styles.line1} />
-          <View style={styles.line2} />
-        </View>
       </View>
 
       <FlatList
@@ -113,15 +109,14 @@ const FeaturedProperties = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    paddingTop: 20,
   },
   sectionHeading: {
     marginBottom: 20,
   },
   heading: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center',
     marginBottom: 10,
     color:COLORS.primary
   },

@@ -11,9 +11,10 @@ import Start from '../Component/Start';
 import Home from '../Component/Home';
 import Profile from '../Component/Profile';
 import COLORS from '../Const/Color';
-import SearchBar from '../Component/SearchBar';
 import Services from '../Component/Services';
 import Details from '../Component/Details';
+import Onboarding from '../Component/Onboarding';
+import SearchScreen from '../Component/SearchScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -53,7 +54,7 @@ const BottomTabs = () => {
           headerShown: false,
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Search"
         component={SearchBar}
         options={{
@@ -62,7 +63,7 @@ const BottomTabs = () => {
           ),
           headerShown: false,
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
         component={Profile}
@@ -108,6 +109,16 @@ const Navigation = () => {
          <Stack.Screen
           name="Details" 
           component={Details}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="onboarding" 
+          component={Onboarding}
+          options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="SearchScreen" 
+          component={SearchScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   StyleSheet,
   CheckBox,
+  Image,
+  ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../Const/Color';
@@ -39,105 +42,128 @@ const Signup = ({navigation}) => {
     console.log('Form submitted:', formData);
     navigation.navigate("Signin")
   };
-
+const [isFocused, setIsFocused] = useState(false);
+const [isFocusedEmail, setIsFocusedEmail] = useState(false);
+const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+const [conisFocusedPassword, setconIsFocusedPassword] = useState(false);
   return (
-    <View style={styles.container}>
-      <LottieView
-        source={require('../Assets/images/animationl.json')} 
-        autoPlay
-        loop
-        style={styles.lottieTopLeft}
-      />
-      <View style={styles.lottieBottomRight}>
-      <LottieView
-        source={require('../Assets/images/animationr.json')} 
-        autoPlay
-        loop
-        style={{ width: 270,  
-          height: 150,
-         }} 
-      />
-</View>
-      <View style={styles.loginbox}>
-        <Text style={styles.title}>
-          Signup! <Text style={styles.subtitle}>New Account.</Text>
-        </Text>
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>
-            Name <Text style={styles.required}>*</Text>
-          </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter Name"
-            value={formData.name}
-            onChangeText={value => handleChange('name', value)}
-          />
+    <ScrollView style={{flex:1, backgroundColor: COLORS.backgroundC}}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{flex: 1}}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+    >
+      <View style={styles.container}>
+        <View>
+          <Image source={require('../Assets/images/logo.png')} style={styles.img} />
         </View>
-
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>
-            Email <Text style={styles.required}>*</Text>
+        
+        <View style={styles.loginbox}>
+          <Text style={styles.title}>
+            Signup! <Text style={styles.subtitle}>New Account.</Text>
           </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter Email"
-            value={formData.email}
-            onChangeText={value => handleChange('email', value)}
-            keyboardType="email-address"
-          />
-        </View>
-
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>
-            Password <Text style={styles.required}>*</Text>
-          </Text>
-          <View style={styles.passGroup}>
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>
+              Name <Text style={styles.required}>*</Text>
+            </Text>
             <TextInput
-              style={styles.input}
-              placeholder="Enter Password"
+              style={[
+                styles.input,
+                { borderColor: isFocused ? COLORS.yellow : '', borderWidth: 1 } 
+              ]}
+              placeholder="Enter Name"
+              value={formData.name}
+              onChangeText={value => handleChange('name', value)}
+              placeholderTextColor="black"
+              onFocus={() => setIsFocused(true)}  
+              onBlur={() => setIsFocused(false)} 
+            />
+          </View>
+  
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>
+              Email <Text style={styles.required}>*</Text>
+            </Text>
+            <TextInput
+              style={[
+                styles.input,
+                { borderColor: isFocusedEmail ? COLORS.yellow : '', borderWidth: 1 } 
+              ]}
+              placeholder="Enter Email"
+              value={formData.email}
+              onChangeText={value => handleChange('email', value)}
+              keyboardType="email-address"
+               placeholderTextColor="black"
+               onFocus={() => setIsFocusedEmail(true)}  
+              onBlur={() => setIsFocusedEmail(false)} 
+            />
+          </View>
+  
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>
+              Password <Text style={styles.required}>*</Text>
+            </Text>
+            <View style={styles.passGroup}>
+              <TextInput
+               style={[
+                styles.input,
+                { borderColor: isFocusedPassword ? COLORS.yellow : '', borderWidth: 1 } 
+              ]}
+                placeholder="Enter Password"
+                secureTextEntry={!showPassword}
+                value={formData.password}
+                onChangeText={value => handleChange('password', value)}
+                 placeholderTextColor="black"
+                 onFocus={() => setIsFocusedPassword(true)}  
+              onBlur={() => setIsFocusedPassword(false)} 
+              />
+              <TouchableOpacity
+                onPress={toggleShowPassword}
+                style={styles.iconWrapper}>
+                <FontAwesome
+                  name={showPassword ? 'eye-slash' : 'eye'}
+                  size={20}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+  
+          <View style={styles.formGroup}>
+            <Text style={styles.label}>
+              Confirm Password <Text style={styles.required}>*</Text>
+            </Text>
+            <TextInput
+             style={[
+              styles.input,
+              { borderColor: conisFocusedPassword ? COLORS.yellow : '', borderWidth: 1 } 
+            ]}
+              placeholder="Enter Confirm Password"
               secureTextEntry={!showPassword}
-              value={formData.password}
-              onChangeText={value => handleChange('password', value)}
+              value={formData.confirmPassword}
+              onChangeText={value => handleChange('confirmPassword', value)}
+               placeholderTextColor="black"
+               onFocus={() => setconIsFocusedPassword(true)}  
+              onBlur={() => setconIsFocusedPassword(false)} 
             />
             <TouchableOpacity
-              onPress={toggleShowPassword}
-              style={styles.iconWrapper}>
-              <FontAwesome
-                name={showPassword ? 'eye-slash' : 'eye'}
-                size={20}
-              />
+                onPress={toggleShowPassword}
+                style={styles.iconWrapper1}>
+                <FontAwesome
+                  name={showPassword ? 'eye-slash' : 'eye'}
+                  size={20}
+                />
             </TouchableOpacity>
           </View>
-        </View>
-
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>
-            Confirm Password <Text style={styles.required}>*</Text>
+  
+          <PrimaryButton title="Sign Up" onPress={handleSubmit} />
+  
+          <Text style={styles.textCenter}>
+            Already have login? <TouchableOpacity onPress={()=> navigation.navigate('Signin')}><Text style={styles.link}>Sign In</Text></TouchableOpacity>
           </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter Confirm Password"
-            secureTextEntry={!showPassword}
-            value={formData.confirmPassword}
-            onChangeText={value => handleChange('confirmPassword', value)}
-          />
-          <TouchableOpacity
-              onPress={toggleShowPassword}
-              style={styles.iconWrapper1}>
-              <FontAwesome
-                name={showPassword ? 'eye-slash' : 'eye'}
-                size={20}
-              />
-            </TouchableOpacity>
         </View>
-
-        <PrimaryButton title="Sign Up" onPress={handleSubmit} />
-
-        <Text style={styles.textCenter}>
-          Already have login? <Text style={styles.link}>Sign In</Text>
-        </Text>
       </View>
-    </View>
+    </KeyboardAvoidingView>
+  </ScrollView>
   );
 };
 
@@ -157,7 +183,9 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     shadowRadius: 2,
-    elevation: 1,
+    elevation: 5,
+    marginBottom:20,
+    marginTop:40
   },
   title: {
     fontSize: 24,
@@ -175,18 +203,20 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: '500',
+    color:'black'
   },
   required: {
     color: 'red',
   },
   input: {
     height: 40,
-    borderColor: '#ccc',
+    borderColor: COLORS.primary,
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
     marginTop: 5,
-    width:280
+    width:290,
+    placeholderTextColor:"red"
   },
   passGroup: {
     flexDirection: 'row',
@@ -230,19 +260,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
   },
-  lottieTopLeft: {
-    position: 'absolute',
-    top:"0%",
-    right: 0,
-    width: 280,  
-    height: 150, 
-  },
-  lottieBottomRight: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-   
-  },
+  img:{
+    width:250,height:180,marginTop:35
+  }
 });
 
 export default Signup;

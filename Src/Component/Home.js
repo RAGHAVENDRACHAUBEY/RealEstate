@@ -1,29 +1,48 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Animated, TouchableOpacity, StyleSheet, ScrollView, LayoutAnimation, UIManager, Platform } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';  
-import { PrimaryButton } from '../Const/Button';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  Animated,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  LayoutAnimation,
+  UIManager,
+  Platform,
+} from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {PrimaryButton} from '../Const/Button';
 import COLORS from '../Const/Color';
 import PropertyTypeSection from './PropertyTypeSection';
 import PropertyRent from './PropertyRent';
 import FeaturedProperties from './FeaturedProperties';
-import { Picker } from '@react-native-picker/picker';
+import {Picker} from '@react-native-picker/picker';
+import Navigation from '../Navigation/Navigation';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-const Home = () => {
+const Home = ({navigation}) => {
   const [searchType, setSearchType] = useState('Buy');
   const [locality, setLocality] = useState('');
   const [propertyType, setPropertyType] = useState('');
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [address, setAddress] = useState('');
-  const [fadeAnim] = useState(new Animated.Value(0)); // For banner animation
+  const [fadeAnim] = useState(new Animated.Value(0));
 
   // Handle Search
   const handleSearch = () => {
-    console.log(`Searching for ${searchType} in ${locality} with property type ${propertyType}, price range ${minPrice} to ${maxPrice}, and address ${address}`);
+    navigation.navigate('SearchScreen');
+    console.log(
+      `Searching for ${searchType} in ${locality} with property type ${propertyType}, price range ${minPrice} to ${maxPrice}, and address ${address}`,
+    );
   };
 
   // Animate banner fade-in
@@ -36,93 +55,82 @@ const Home = () => {
   }, []);
 
   // Handle animation for button press
-  const handleSearchTypeChange = (type) => {
+  const handleSearchTypeChange = type => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
     setSearchType(type);
   };
-
+  const [selectedTab, setSelectedTab] = useState('Buy');
+  const tabs = ['Buy', 'Rent', 'Commercial'];
   return (
     <ScrollView>
       <View style={styles.container}>
-        
         {/* Animated Banner */}
-        <Animated.View style={[styles.banner, { opacity: fadeAnim }]}>
+        <Animated.View style={[styles.banner, {opacity: fadeAnim}]}>
           <Text style={styles.heading}>
-            Find Your Best Dream House for <Text style={styles.highlight}>Rental, Buy & Sell...</Text>
+            Find Your Best Dream House for{' '}
+            <Text style={styles.highlight}>Rental, Buy & Sell...</Text>
           </Text>
         </Animated.View>
 
         {/* Search Options */}
-        <View style={styles.searchOptions}>
-          <TouchableOpacity
-            style={[styles.iconButton, searchType === 'Buy' && styles.activeButton]}
-            onPress={() => handleSearchTypeChange('Buy')}
-          >
-            <FontAwesome name="home" size={24} color={searchType === 'Buy' ? COLORS.backgroundC : COLORS.primary} />
-            <Text style={[styles.buttonText, searchType === 'Buy' && styles.activeButtonText]}>Buy</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.iconButton, searchType === 'Rent' && styles.activeButton]}
-            onPress={() => handleSearchTypeChange('Rent')}
-          >
-            <FontAwesome name="bed" size={24} color={searchType === 'Rent' ? COLORS.backgroundC : COLORS.primary} />
-            <Text style={[styles.buttonText, searchType === 'Rent' && styles.activeButtonText]}>Rent</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.iconButton, searchType === 'Commercial' && styles.activeButton]}
-            onPress={() => handleSearchTypeChange('Commercial')}
-          >
-            <FontAwesome name="building" size={24} color={searchType === 'Commercial' ? COLORS.backgroundC : COLORS.primary} />
-            <Text style={[styles.buttonText, searchType === 'Commercial' && styles.activeButtonText]}>Commercial</Text>
-          </TouchableOpacity>
+        <View style={styles.tabContainer}>
+          {tabs.map(tab => (
+            <TouchableOpacity
+              key={tab}
+              style={[styles.tab, selectedTab === tab && styles.selectedTab]}
+              onPress={() => setSelectedTab(tab)}>
+              <Text
+                style={[
+                  styles.tabText,
+                  selectedTab === tab && styles.selectedTabText,
+                ]}>
+                {tab}
+              </Text>
+            </TouchableOpacity>
+          ))}
         </View>
-
-        {/* Search Inputs */}
-        <View style={styles.searchInputs}>
-          <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={propertyType}
-              onValueChange={(itemValue) => setPropertyType(itemValue)}
-              style={styles.picker}
-            >
-              <Picker.Item label="Select Property Type" value="" />
-              <Picker.Item label="Apartment" value="apartment" />
-              <Picker.Item label="House" value="house" />
-              <Picker.Item label="Condo" value="condo" />
-              <Picker.Item label="Land" value="land" />
-              <Picker.Item label="Commercial" value="commercial" />
-            </Picker>
+        <TouchableOpacity onPress={() => navigation.navigate('SearchScreen')}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.input}>
+              Search upto 3 localities or landmarks
+            </Text>
+            <Icon
+              name="search"
+              size={20}
+              color="white"
+              style={styles.inputIcon1}
+            />
           </View>
-
-          <TextInput
-            style={styles.input}
-            placeholder="Enter Address"
-            value={address}
-            onChangeText={(text) => setAddress(text)}
-          />
-
-          <TextInput
-            style={styles.input}
-            placeholder="Min Price"
-            keyboardType="numeric"
-            value={minPrice}
-            onChangeText={(text) => setMinPrice(text)}
-          />
-
-          <TextInput
-            style={styles.input}
-            placeholder="Max Price"
-            keyboardType="numeric"
-            value={maxPrice}
-            onChangeText={(text) => setMaxPrice(text)}
-          />
-
-          <PrimaryButton onPress={handleSearch} title="Search" />
+        </TouchableOpacity>
+        <Text style={styles.sectionTitle}>Services for you</Text>
+        <View
+          style={{
+          flexDirection:"row",justifyContent:"space-between",flexWrap:"wrap"
+            
+          }}>
+          <View style={styles.card}>
+            <Icon name="local-shipping" color={COLORS.yellow} size={24} />
+            <Text style={styles.title}>Packers & Movers</Text>
+            <Text style={styles.description}>Lowest Quote</Text>
+          </View>
+          <View style={styles.card}>
+            <Icon name="campaign" color={COLORS.yellow} size={24} />
+            <Text style={styles.title}>Digital Marketing</Text>
+            <Text style={styles.description}>Lowest Quote</Text>
+          </View>
+          <View style={styles.card}>
+            <Icon name="home" color={COLORS.yellow} size={24} />
+            <Text style={styles.title}>Home Renovation</Text>
+            <Text style={styles.description}>Lowest Quote</Text>
+          </View>
+          <View style={styles.card}>
+            <Icon name="local-shipping" color={COLORS.yellow} size={24} />
+            <Text style={styles.title}>Packers & Movers</Text>
+            <Text style={styles.description}>Lowest Quote</Text>
+          </View>
+       
         </View>
 
-        {/* Property Sections */}
         <PropertyTypeSection />
         <PropertyRent />
         <FeaturedProperties />
@@ -136,6 +144,7 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingVertical: 30,
     backgroundColor: COLORS.backgroundC,
+    flex:1
   },
   banner: {
     marginBottom: 20,
@@ -160,11 +169,11 @@ const styles = StyleSheet.create({
     borderColor: '#f8bd0d',
     borderRadius: 10,
     shadowColor: '#f8bd0d',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 4,
-    backgroundColor:COLORS.yellow
+    backgroundColor: COLORS.yellow,
   },
   activeButton: {
     backgroundColor: COLORS.primary,
@@ -197,6 +206,76 @@ const styles = StyleSheet.create({
   picker: {
     height: 50,
     width: '100%',
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  selectedTab: {
+    borderBottomWidth: 2,
+    borderBottomColor: 'red',
+  },
+  tabText: {
+    color: 'gray',
+  },
+  selectedTabText: {
+    color: 'red',
+  },
+  content: {
+    padding: 16,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    borderRadius: 4,
+    marginBottom: 16,
+    marginTop: 10,
+  },
+  input: {
+    flex: 1,
+    padding: 12,
+    color: 'black',
+  },
+
+  inputIcon1: {
+    marginHorizontal: 12,
+    backgroundColor: COLORS.yellow,
+    padding: 10,
+  },
+  card: {
+    alignItems: 'center',
+    backgroundColor: '#F0F4F8',
+    borderRadius: 8,
+    padding: 16,
+    // width: 100,
+  
+    marginBottom:20,
+  },
+  title: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  description: {
+    fontSize: 12,
+    color: '#666',
+    marginTop: 4,
+    textAlign: 'center',
+  },
+  sectionTitle: {
+    fontWeight: 'bold',
+    marginBottom: 8,
+    color: 'black',
+    fontSize: 16,
   },
 });
 

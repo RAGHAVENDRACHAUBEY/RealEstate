@@ -98,12 +98,16 @@ const Services = ({navigation}) => {
   return (
     <View style={styles.container}>
       {/* Filter Icon */}
+      <View > 
       <TouchableOpacity
-        style={styles.filterIcon}
+      style={{ flexDirection: "row" ,gap:5}}
+        // style={styles.filterIcon}
         onPress={() => setFilterModalVisible(true)}>
-        <FontAwesome name="filter" size={24} color={COLORS.primary} />
+     
+      <Text style={styles.title}>Filter</Text> 
+       <FontAwesome name="filter" size={24} color={COLORS.primary} />
       </TouchableOpacity>
-
+      </View>
       {/* Modal for Filters */}
       <Modal
         visible={filterModalVisible}
@@ -194,6 +198,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    marginTop:10
   },
   propertyList: {
     paddingVertical: 10,
@@ -242,12 +247,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'gray',
   },
-  filterIcon: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
-    zIndex: 10,
-  },
+  // filterIcon: {
+  //   position: 'absolute',
+  //   top: 20,
+  //   left:20,
+  //   zIndex: 10,
+  // },
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -288,6 +293,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 10,
   },
+  title:{
+    fontSize:16,fontWeight:"bold",color:"black"
+  }
 });
 
 export default Services;
