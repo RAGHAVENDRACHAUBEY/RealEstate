@@ -15,6 +15,7 @@ import Services from '../Component/Services';
 import Details from '../Component/Details';
 import Onboarding from '../Component/Onboarding';
 import SearchScreen from '../Component/SearchScreen';
+import PackerMover from '../Component/PackerMover';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -119,6 +120,11 @@ const Navigation = () => {
          <Stack.Screen
           name="SearchScreen" 
           component={SearchScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="packermover" 
+          component={PackerMover}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

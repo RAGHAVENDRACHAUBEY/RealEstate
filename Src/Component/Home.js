@@ -108,11 +108,13 @@ const Home = ({navigation}) => {
           flexDirection:"row",justifyContent:"space-between",flexWrap:"wrap"
             
           }}>
+            <TouchableOpacity onPress={()=> navigation.navigate("packermover")}>
           <View style={styles.card}>
             <Icon name="local-shipping" color={COLORS.yellow} size={24} />
             <Text style={styles.title}>Packers & Movers</Text>
             <Text style={styles.description}>Lowest Quote</Text>
           </View>
+          </TouchableOpacity>
           <View style={styles.card}>
             <Icon name="campaign" color={COLORS.yellow} size={24} />
             <Text style={styles.title}>Digital Marketing</Text>

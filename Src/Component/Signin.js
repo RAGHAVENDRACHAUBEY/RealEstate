@@ -56,7 +56,7 @@ const [isFocusedPassword, setIsFocusedPassword] = useState(false);
     >
       <View style={styles.container}>
         <View>
-          <Image source={require('../Assets/images/logo.png')} style={styles.img} />
+          <Image source={require('../Assets/images/dream.png')} style={styles.img} />
         </View>
         
         <View style={styles.loginbox}>
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   img:{
-    width:250,height:180,marginTop:35
+    width:350,height:240,marginTop:30,resizeMode:"cover"
   }
 });
 

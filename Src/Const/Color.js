@@ -1,10 +1,10 @@
 const COLORS = {
     backgroundC: '#FFFF',
-    primary:"#0e2f4f",
+    primary:"#9b6f2e",
     textcolor:"#808080",
     titleText:"black",
     white: '#FFF',
-    yellow: '#f8bd0d',
+    yellow: '#535457',
     secondary: '#fedac5',
     light: '#E5E5E5',
     grey: '#908e8c',
